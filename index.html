@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora IRAM 15 - Libus</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #1a1a1a; 
+            display: flex; 
+            justify-content: center; 
+            padding: 2rem; 
+        }
+        .container { 
+            background: #ffffff; 
+            padding: 2.5rem; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            max-width: 400px; 
+            width: 100%; 
+            text-align: center; 
+        }
+        .logo { 
+            max-width: 180px; 
+            margin-bottom: 1rem; 
+        }
+        h2 { 
+            color: #1a1a1a; 
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        p.subtitle {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        input, select, button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 1rem; 
+            border-radius: 6px; 
+            border: 1px solid #ccc; 
+            box-sizing: border-box; 
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #e60050; /* Rojo inspirado en el logo */
+        }
+        button { 
+            background-color: #e60050; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background-color 0.3s;
+        }
+        button:hover { 
+            background-color: #b3003e; 
+        }
+        .result { 
+            margin-top: 15px; 
+            padding: 20px; 
+            background-color: #f8f9fa; 
+            border-left: 4px solid #1a1a1a;
+            border-radius: 4px; 
+            text-align: left;
+            display: none; 
+        }
+        .result p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+        .highlight { 
+            font-weight: bold; 
+            color: #e60050; 
+            font-size: 1.2rem; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Asegúrate de subir la imagen 'libus_positivo_CMYK.jpg' a tu repositorio en GitHub -->
+        <img src="libus_positivo_CMYK.jpg" alt="Libus Logo" class="logo">
+        
+        <h2>Muestreo IRAM 15</h2>
+        <p class="subtitle">Inspección Normal (Nivel II) - Muestreo Simple</p>
+        
+        <label for="lote">Tamaño del Lote recibido:</label>
+        <input type="number" id="lote" placeholder="Ej. 1500" min="2">
+        
+        <button onclick="calcularMuestra()">Calcular Muestra</button>
+        
+        <div id="resultado" class="result">
+            <p>Letra de Código: <span id="letra" class="highlight"></span></p>
+            <p>Cantidad a Revisar: <span id="muestra" class="highlight"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calcularMuestra() {
+            const lote = parseInt(document.getElementById('lote').value);
+            const resultadoDiv = document.getElementById('resultado');
+            const letraSpan = document.getElementById('letra');
+            const muestraSpan = document.getElementById('muestra');
+
+            if (!lote || lote < 2) {
+                alert("Por favor, ingresa un tamaño de lote válido (mínimo 2).");
+                return;
+            }
+
+            let letra = '';
+            let muestra = 0;
+
+            // Valores de la Tabla 1 (Nivel General II) y Tabla 2-A (Normal) de la Norma IRAM 15
+            if (lote >= 2 && lote <= 8) { letra = 'A'; muestra = 2; }
+            else if (lote <= 15) { letra = 'B'; muestra = 3; }
+            else if (lote <= 25) { letra = 'C'; muestra = 5; }
+            else if (lote <= 50) { letra = 'D'; muestra = 8; }
+            else if (lote <= 90) { letra = 'E'; muestra = 13; }
+            else if (lote <= 150) { letra = 'F'; muestra = 20; }
+            else if (lote <= 280) { letra = 'G'; muestra = 32; }
+            else if (lote <= 500) { letra = 'H'; muestra = 50; }
+            else if (lote <= 1200) { letra = 'J'; muestra = 80; }
+            else if (lote <= 3200) { letra = 'K'; muestra = 125; }
+            else if (lote <= 10000) { letra = 'L'; muestra = 200; }
+            else if (lote <= 35000) { letra = 'M'; muestra = 315; }
+            else if (lote <= 150000) { letra = 'N'; muestra = 500; }
+            else if (lote <= 500000) { letra = 'P'; muestra = 800; }
+            else { letra = 'Q'; muestra = 1250; } 
+
+            letraSpan.textContent = letra;
+            muestraSpan.textContent = muestra + " unidades";
+            resultadoDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
